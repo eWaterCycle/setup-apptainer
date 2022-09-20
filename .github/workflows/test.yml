@@ -22,7 +22,7 @@ jobs:
       - name: Setup apptainer
         uses: ./
       - name: Verify singularity
-        run: __tests__/verify-sing.sh '1.0.3'
+        run: __tests__/verify-apptainer-version.sh '1.0.3'
         shell: bash        
       - name: Run an apptainer container
         run: apptainer -v run docker://alpine cat /etc/os-release
