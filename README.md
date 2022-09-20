@@ -3,7 +3,7 @@
 
 # GitHub Action to setup apptainer
 
-To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads, compiles and installs it for you.
+To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads and installs it for you.
 
 The setup will add the apptainer executable to the PATH env var so it can be called in later steps.
 
