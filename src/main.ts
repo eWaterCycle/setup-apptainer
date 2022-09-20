@@ -1,18 +1,27 @@
-import * as core from '@actions/core'
-import {wait} from './wait'
+import {getInput, setOutput, setFailed} from '@actions/core'
+import {downloadTool} from '@actions/tool-cache'
+import {exec} from '@actions/exec'
 
 async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    if (process.platform === 'win32') {
+      throw new Error('Apptainer is not supported on Windows')
+    } else if (process.platform === 'darwin') {
+      throw new Error('Apptainer is not supported on MacOS')
+    }
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const versionSpec: string = getInput('apptainer-version')
+    const url = `https://github.com/apptainer/apptainer/releases/download/v${versionSpec}/apptainer_${versionSpec}_amd64.deb`
 
-    core.setOutput('time', new Date().toTimeString())
+    const path = await downloadTool(url)
+
+    // TODO cache .deb file
+
+    await exec('sudo', ['dpkg', '--install', path])
+
+    setOutput('apptainer-version', versionSpec)
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) setFailed(error.message)
   }
 }
 

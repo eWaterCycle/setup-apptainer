@@ -1,11 +1,14 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Setup apptainer'
+description: 'Setup apptainer an open source container platform'
+author: Stefan Verhoeven
 inputs:
-  milliseconds: # change this
-    required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  apptainer-version:
+    description: Version of singularity to setup
+    required: false
+    default: 1.0.3
 runs:
   using: 'node16'
   main: 'dist/index.js'
+branding:
+  icon: box
+  color: blue

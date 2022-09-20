@@ -2,19 +2,34 @@
   <a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
 </p>
 
-# Create a JavaScript Action using TypeScript
+# GitHub Action to setup apptainer
 
-Use this template to bootstrap the creation of a TypeScript action.:rocke1t:
+To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads, compiles and installs it for you.
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+The setup will add the apptainer executable to the PATH env var so it can be called in later steps.
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+## Inputs
 
-## Create an action from this template
+### `apptainer-version`
 
-Click the `Use this Template` and provide the new repo details for your action
+Version of apptainer. See [releases page](https://github.com/apptainer/apptainer/releases) for available versions.
+Version string should start with major version, not with `v` character.
 
-## Code in Main
+## Example usage
+
+```yaml
+steps:
+- uses: actions/checkout@v2
+- uses: eWaterCycle/setup-apptainer@v1
+  with:
+    apptainer-version: 1.0.3
+- name: Run an apptainer container
+  run: apptainer run docker://alpine cat /etc/os-release
+```
+
+## Build
+
+For developers of setup-apptainer action.
 
 > First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
 
@@ -27,48 +42,6 @@ Build the typescript and package it for distribution
 ```bash
 $ npm run build && npm run package
 ```
-
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
 
 ## Publish to a distribution branch
 
@@ -95,7 +68,7 @@ You can now validate the action by referencing `./` in a workflow in your repo (
 ```yaml
 uses: ./
 with:
-  milliseconds: 1000
+  apptainer-version: 1.0.3
 ```
 
 See the [actions tab](https://github.com/ewatercycle/setup-apptainer/actions) for runs of this action! :rocket:
