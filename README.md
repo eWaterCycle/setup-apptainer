@@ -1,6 +1,5 @@
-<p align="center">
-  <a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
-</p>
+<a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7097122.svg)](https://doi.org/10.5281/zenodo.7097122)
 
 # GitHub Action to setup apptainer
 

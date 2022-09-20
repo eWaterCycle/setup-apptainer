@@ -15,5 +15,13 @@ keywords:
 license: Apache-2.0
 message: "If you use this software, please cite it using these metadata."
 repository-code: "https://github.com/eWaterCycle/setup-apptainer"
+url: https://github.com/marketplace/actions/setup-apptainer
 title: setup-apptainer
+abstract: GitHub Action workflow to setup apptainer.
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7097122
+    description: >-
+      DOI represents all versions, and will always
+      resolve to the latest one.
 ...
