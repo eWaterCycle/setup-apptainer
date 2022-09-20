@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
+  <a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
 </p>
 
 # Create a JavaScript Action using TypeScript
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+Use this template to bootstrap the creation of a TypeScript action.:rocke1t:
 
 This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
 
@@ -98,7 +98,7 @@ with:
   milliseconds: 1000
 ```
 
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
+See the [actions tab](https://github.com/ewatercycle/setup-apptainer/actions) for runs of this action! :rocket:
 
 ## Usage:
 

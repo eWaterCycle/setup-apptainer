@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "setup-apptainer",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "Apptainer setup action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/ewatercycle/setup-apptainer.git"
   },
   "keywords": [
     "actions",
@@ -23,7 +23,7 @@
     "setup"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.6.0"
   },
