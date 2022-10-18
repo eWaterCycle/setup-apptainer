@@ -18,7 +18,7 @@ async function run(): Promise<void> {
 
     // TODO cache .deb file
 
-    await exec('sudo', ['dpkg', '--install', path])
+    await exec('sudo', ['gdebi', '--non-interactive', path])
 
     setOutput('apptainer-version', versionSpec)
   } catch (error) {
