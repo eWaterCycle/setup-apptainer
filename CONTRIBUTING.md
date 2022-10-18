@@ -102,14 +102,11 @@ $ git push
 
 Create a release on https://github.com/setup-apptainer/setup-apptainer/releases/new with semantic versioning.
 
-Create short tag (`v<number>`) with
-```bash
-$ git pull
-$ git checkout main
-$ git tag -fa v2 -m "Update v2 tag"
-$ git push origin v2 --force
+Following the [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md), add a short tag, such that the major version tag points to the latest stable release for that major version:
+```
+git pull
+git tag -fa v2 -m "Update v2 tag"
+git push origin v2 --force
 ```
 
 Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
