@@ -1,6 +1,8 @@
 <a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7097122.svg)](https://doi.org/10.5281/zenodo.7097122)
 
+This action enables you to easily use apptainer images in your GitHub action workflows.
+
 # GitHub Action to setup apptainer
 
 To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads and installs it for you.
