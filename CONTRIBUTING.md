@@ -92,20 +92,22 @@ $ npm run build && npm run package
 
 Actions are run from GitHub repos so we will checkin the packed dist folder. 
 
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
+Then build (transpile Typescript to Javascript), package (bundle dependencies and code together) and push the results:
 ```bash
 $ npm run build && npm run package
 $ git add dist
 $ git commit -a -m "prod dependencies"
+$ git push
 ```
 
 Create a release on https://github.com/setup-apptainer/setup-apptainer/releases/new with semantic versioning.
 
 Create short tag (`v<number>`) with
-```
-git pull
-git tag -fa v2 -m "Update v2 tag"
-git push origin v2 --force
+```bash
+$ git pull
+$ git checkout main
+$ git tag -fa v2 -m "Update v2 tag"
+$ git push origin v2 --force
 ```
 
 Your action is now published! :rocket: 
