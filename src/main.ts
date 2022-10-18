@@ -17,7 +17,7 @@ async function run(): Promise<void> {
     const path = await downloadTool(url)
 
     // TODO cache .deb file
-    await exec('sudo', ['apt', ' update'])
+    await exec('sudo', ['apt', 'update'])
     await exec('sudo', ['apt', 'install', 'gdebi'])
     await exec('sudo', ['gdebi', '--non-interactive', path])
 
