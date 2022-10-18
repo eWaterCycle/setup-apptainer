@@ -28,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup apptainer
+        with:
+          apptainer-version: ${{ matrix.version }}
         uses: ./
       - name: Verify singularity
         run: __tests__/verify-apptainer-version.sh ${{ matrix.version }}
