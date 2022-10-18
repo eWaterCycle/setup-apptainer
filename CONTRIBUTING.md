@@ -101,7 +101,7 @@ $ git commit -a -m "prod dependencies"
 
 Create a release on https://github.com/setup-apptainer/setup-apptainer/releases/new with semantic versioning.
 
-Create short tag (`v<number>`) with
+Following the [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md), add a short tag, such that the major version tag points to the latest stable release for that major version:
 ```
 git pull
 git tag -fa v2 -m "Update v2 tag"
