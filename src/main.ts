@@ -1,4 +1,4 @@
-import {getInput, setOutput, setFailed} from '@actions/core'
+import {getInput, setOutput, setFailed, info} from '@actions/core'
 import {downloadTool} from '@actions/tool-cache'
 import {exec} from '@actions/exec'
 
@@ -13,11 +13,13 @@ async function run(): Promise<void> {
     const versionSpec: string = getInput('apptainer-version')
     const url = `https://github.com/apptainer/apptainer/releases/download/v${versionSpec}/apptainer_${versionSpec}_amd64.deb`
 
+    info(`Dowloading ${url}`)
     const path = await downloadTool(url)
 
     // TODO cache .deb file
-
-    await exec('sudo', ['dpkg', '--install', path])
+    await exec('sudo', ['apt', 'update'])
+    await exec('sudo', ['apt', 'install', 'gdebi'])
+    await exec('sudo', ['gdebi', '--non-interactive', path])
 
     setOutput('apptainer-version', versionSpec)
   } catch (error) {

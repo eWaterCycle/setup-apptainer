@@ -3,7 +3,7 @@
 
 # GitHub Action to setup apptainer
 
-To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads, compiles and installs it for you.
+To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads and installs it for you.
 
 The setup will add the apptainer executable to the PATH env var so it can be called in later steps.
 
@@ -19,9 +19,9 @@ Version string should start with major version, not with `v` character.
 ```yaml
 steps:
 - uses: actions/checkout@v2
-- uses: eWaterCycle/setup-apptainer@v1
+- uses: eWaterCycle/setup-apptainer@v2
   with:
-    apptainer-version: 1.0.3
+    apptainer-version: 1.1.2
 - name: Run an apptainer container
   run: apptainer run docker://alpine cat /etc/os-release
 ```
@@ -48,29 +48,15 @@ Actions are run from GitHub repos so we will checkin the packed dist folder.
 
 Then run [ncc](https://github.com/zeit/ncc) and push the results:
 ```bash
-$ npm run package
+$ npm run build && npm run package
 $ git add dist
 $ git commit -a -m "prod dependencies"
 $ git push origin releases/v1
 ```
 
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
 Your action is now published! :rocket: 
 
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  apptainer-version: 1.0.3
-```
-
-See the [actions tab](https://github.com/ewatercycle/setup-apptainer/actions) for runs of this action! :rocket:
 
 ## Usage:
 
