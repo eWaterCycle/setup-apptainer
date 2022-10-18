@@ -57,8 +57,7 @@ The sections below outline the steps in each case.
     `npm install`;
 5. make sure the existing tests still work by running `npm run test`;
 6. add your own tests (if necessary);
-7. update or expand the documentation; Please add [Google Style Python
-    docstrings](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings).
+7. update or expand the documentation; Make sure the `inputs` in [action.yml](action.yml) file are in-sync with their descriptions in [README.md#inputs](README.md#inputs);
 8. [push](http://rogerdudler.github.io/git-guide/) your feature branch
     to (your fork of) the ewatercycle repository on GitHub;
 9. create the pull request, e.g. following the instructions
