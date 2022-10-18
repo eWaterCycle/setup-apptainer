@@ -33,6 +33,8 @@ function run() {
             (0, core_1.info)(`Dowloading ${url}`);
             const path = yield (0, tool_cache_1.downloadTool)(url);
             // TODO cache .deb file
+            yield (0, exec_1.exec)('sudo', ['apt', ' update']);
+            yield (0, exec_1.exec)('sudo', ['apt', 'install', 'gdebi']);
             yield (0, exec_1.exec)('sudo', ['gdebi', '--non-interactive', path]);
             (0, core_1.setOutput)('apptainer-version', versionSpec);
         }
