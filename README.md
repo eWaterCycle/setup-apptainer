@@ -1,6 +1,8 @@
 <a href="https://github.com/ewatercycle/setup-apptainer/actions"><img alt="typescript-action status" src="https://github.com/ewatercycle/setup-apptainer/workflows/build-test/badge.svg"></a>
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7097122.svg)](https://doi.org/10.5281/zenodo.7097122)
 
+This action enables you to easily use apptainer images in your GitHub action workflows.
+
 # GitHub Action to setup apptainer
 
 To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads and installs it for you.
@@ -26,38 +28,7 @@ steps:
   run: apptainer run docker://alpine cat /etc/os-release
 ```
 
-## Build
+## Contributing
 
-For developers of setup-apptainer action.
-
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 9, for instance.
-
-Install the dependencies  
-```bash
-$ npm install
-```
-
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run build && npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+If you want to contribute to the development of apptainer-setup action,
+have a look at the [contribution guidelines](CONTRIBUTING.md).
