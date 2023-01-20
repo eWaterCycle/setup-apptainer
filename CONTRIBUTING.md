@@ -18,7 +18,7 @@ The sections below outline the steps in each case.
 ## You have a question
 
 1. use the search functionality
-    [here](https://github.com/setup-apptainer/setup-apptainer/issues) to see if
+    [here](https://github.com/eWaterCycle/setup-apptainer/issues) to see if
     someone already filed the same issue;
 2. if your issue search did not yield any relevant results, make a new
     issue;
@@ -27,7 +27,7 @@ The sections below outline the steps in each case.
 ## You think you may have found a bug
 
 1. use the search functionality
-    [here](https://github.com/setup-apptainer/setup-apptainer/issues) to see if
+    [here](https://github.com/eWaterCycle/setup-apptainer/issues) to see if
     someone already filed the same issue;
 2. if your issue search did not yield any relevant results, make a new
     issue, making sure to provide enough information to the rest of the
@@ -100,7 +100,7 @@ $ git commit -a -m "prod dependencies"
 $ git push
 ```
 
-Create a release on https://github.com/setup-apptainer/setup-apptainer/releases/new with semantic versioning.
+Create a release on https://github.com/eWaterCycle/setup-apptainer/releases/new with semantic versioning.
 
 Following the [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md), add a short tag, such that the major version tag points to the latest stable release for that major version:
 ```
