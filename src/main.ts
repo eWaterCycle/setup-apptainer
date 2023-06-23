@@ -29,7 +29,7 @@ async function run(): Promise<void> {
       path = `${path}/apptainer.deb`
     }
 
-    await exec('sudo', ['apt-get', 'install', '-y', '--no-recommends', path])
+    await exec('sudo', ['apt-get', 'install', '-y', path])
     setOutput('apptainer-version', versionSpec)
   } catch (error) {
     if (error instanceof Error) setFailed(error.message)
