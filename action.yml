@@ -3,7 +3,7 @@ description: 'Setup apptainer an open source container platform'
 author: Stefan Verhoeven
 inputs:
   apptainer-version:
-    description: Version of singularity to setup
+    description: Version of apptainer to setup
     required: false
     default: 1.1.2
 runs:
