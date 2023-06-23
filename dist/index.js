@@ -30,12 +30,21 @@ function run() {
             }
             const versionSpec = (0, core_1.getInput)('apptainer-version');
             const url = `https://github.com/apptainer/apptainer/releases/download/v${versionSpec}/apptainer_${versionSpec}_amd64.deb`;
-            (0, core_1.info)(`Dowloading ${url}`);
-            const path = yield (0, tool_cache_1.downloadTool)(url);
-            // TODO cache .deb file
-            yield (0, exec_1.exec)('sudo', ['apt', 'update']);
-            yield (0, exec_1.exec)('sudo', ['apt', 'install', 'gdebi']);
-            yield (0, exec_1.exec)('sudo', ['gdebi', '--non-interactive', path]);
+            const toolName = 'apptainer';
+            const fname = 'apptainer.deb';
+            let cacheDir = (0, tool_cache_1.find)(toolName, versionSpec);
+            if (cacheDir !== '') {
+                (0, core_1.info)(`Found cache: ${cacheDir}/`);
+            }
+            else {
+                (0, core_1.info)(`Dowloading ${url}`);
+                const pathToDeb = yield (0, tool_cache_1.downloadTool)(url);
+                (0, core_1.info)('Adding deb to cache');
+                cacheDir = yield (0, tool_cache_1.cacheFile)(pathToDeb, fname, toolName, versionSpec);
+                (0, core_1.info)(`... ${cacheDir}`);
+            }
+            const pathToCachedDeb = `${cacheDir}/${fname}`;
+            yield (0, exec_1.exec)('sudo', ['apt-get', 'install', '-y', pathToCachedDeb]);
             (0, core_1.setOutput)('apptainer-version', versionSpec);
         }
         catch (error) {
