@@ -31,15 +31,16 @@ function run() {
             const versionSpec = (0, core_1.getInput)('apptainer-version');
             const url = `https://github.com/apptainer/apptainer/releases/download/v${versionSpec}/apptainer_${versionSpec}_amd64.deb`;
             let path = (0, tool_cache_1.find)('apptainer', versionSpec);
-            if (path === '') {
+            if (path !== '') {
+                path = `${path}/apptainer.deb`;
+                (0, core_1.info)(`Using cached file: ${path}`);
+            }
+            else {
                 (0, core_1.info)(`Dowloading ${url}`);
                 path = yield (0, tool_cache_1.cacheFile)(yield (0, tool_cache_1.downloadTool)(url), 'apptainer.deb', 'apptainer', versionSpec);
                 path = `${path}/apptainer.deb`;
             }
-            else {
-                (0, core_1.info)(`Using cached file: ${path}`);
-            }
-            yield (0, exec_1.exec)('sudo', ['apt', 'install', path]);
+            yield (0, exec_1.exec)('sudo', ['apt-get', 'install', '-y', '--no-recommends', path]);
             (0, core_1.setOutput)('apptainer-version', versionSpec);
         }
         catch (error) {
