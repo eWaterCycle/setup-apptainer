@@ -15,7 +15,10 @@ async function run(): Promise<void> {
 
     let path = find('apptainer', versionSpec)
 
-    if (path === '') {
+    if (path !== '') {
+      path = `${path}/apptainer.deb`
+      info(`Using cached file: ${path}`)
+    } else {
       info(`Dowloading ${url}`)
       path = await cacheFile(
         await downloadTool(url),
@@ -24,11 +27,9 @@ async function run(): Promise<void> {
         versionSpec
       )
       path = `${path}/apptainer.deb`
-    } else {
-      info(`Using cached file: ${path}`)
     }
 
-    await exec('sudo', ['apt', 'install', path])
+    await exec('sudo', ['apt-get', 'install', '-y', '--no-recommends', path])
     setOutput('apptainer-version', versionSpec)
   } catch (error) {
     if (error instanceof Error) setFailed(error.message)
