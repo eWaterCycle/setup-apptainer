@@ -76,7 +76,7 @@ This section is for maintainers of the setup-apptainer action.
 
 ### Build
 
-> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 16, for instance.
+> First, you'll need to have a reasonably modern version of `node` handy. This won't work with versions older than 20, for instance.
 
 Install the dependencies  
 ```bash
