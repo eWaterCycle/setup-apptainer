@@ -23,7 +23,7 @@ jobs:
           - ubuntu-22.04
         version:
           - '1.0.3'
-          - '1.1.2'
+          - '1.1.9'
           - '1.3.0'
     runs-on: ${{ matrix.os }}
     steps:
@@ -32,7 +32,7 @@ jobs:
         with:
           apptainer-version: ${{ matrix.version }}
         uses: ./
-      - name: Verify singularity
+      - name: Verify apptainer
         run: __tests__/verify-apptainer-version.sh ${{ matrix.version }}
         shell: bash        
       - name: Run an apptainer container
