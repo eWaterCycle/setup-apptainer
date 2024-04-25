@@ -5,9 +5,9 @@ inputs:
   apptainer-version:
     description: Version of apptainer to setup
     required: false
-    default: 1.1.9
+    default: 1.3.0
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: box
