@@ -23,7 +23,7 @@ steps:
 - uses: actions/checkout@v2
 - uses: eWaterCycle/setup-apptainer@v2
   with:
-    apptainer-version: 1.1.2
+    apptainer-version: 1.3.0
 - name: Run an apptainer container
   run: apptainer run docker://alpine cat /etc/os-release
 ```
