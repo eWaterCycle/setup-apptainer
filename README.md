@@ -2,35 +2,42 @@
 ![Coverage](badges/coverage.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7097122.svg)](https://doi.org/10.5281/zenodo.7097122)
 
-This action enables you to easily use apptainer images in your GitHub action
-workflows.
-
 # GitHub Action to setup apptainer
 
-To use [apptainer](https://apptainer.org/) containers in a workflow you need to
-install it first. This GitHub Action installs it from the official
-[Apptainer Ubuntu PPA](https://apptainer.org/docs/admin/latest/installation.html#install-ubuntu-packages),
-using packages built for the runner's Ubuntu release. Ubuntu runners must have
-`sudo` and `add-apt-repository` available, as GitHub-hosted Ubuntu runners do.
+Install [Apptainer](https://apptainer.org/) in your GitHub Actions workflows on
+Ubuntu 22.04, 24.04, or 26.04 (x64) using
+[apptainers unprivileged install script](https://apptainer.org/docs/admin/1.5/installation.html#install-unprivileged-from-pre-built-binaries).
+The action adds `apptainer` to `PATH` and caches the installation for faster
+subsequent runs.
 
-The setup will add the apptainer executable to the PATH env var so it can be
-called in later steps.
+Requires `sudo`, which is available on GitHub-hosted Ubuntu runners.
 
 ## Inputs
 
 ### `apptainer-version`
 
-Version of apptainer, defaulting to `latest`. An explicit version such as
-`1.5.5` must be available in the PPA for the runner's Ubuntu release. The PPA
-generally only retains the latest version, so older versions previously
-installed from GitHub releases may no longer be available. Version strings must
-not start with `v`.
+Apptainer version, such as `1.5.4`, without a leading `v`. Defaults to `latest`,
+which selects the latest stable release on each run. Versions 1.1.4 and newer
+are supported when a release provides prebuilt x64 binaries.
+
+### `cache`
+
+Cache the installation across workflow runs. Defaults to `true`; set to `false`
+to disable. No additional `actions/cache` step is needed.
+
+### `github-token`
+
+Token used to look up releases. Defaults to `${{ github.token }}`.
 
 ## Outputs
 
 ### `apptainer-version`
 
 The installed Apptainer version.
+
+### `cache-hit`
+
+`true` when an existing installation was reused; otherwise `false`.
 
 ## Example usage
 
@@ -46,5 +53,4 @@ steps:
 
 ## Contributing
 
-If you want to contribute to the development of apptainer-setup action, have a
-look at the [contribution guidelines](CONTRIBUTING.md).
+See the [contribution guidelines](CONTRIBUTING.md).

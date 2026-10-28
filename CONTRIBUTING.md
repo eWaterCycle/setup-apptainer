@@ -1,125 +1,169 @@
 # Contributing guidelines
 
-We welcome any kind of contributions to our software, from simple comment or
-question to a full fledged
-[pull request](https://help.github.com/articles/about-pull-requests/). Please
-read and follow our [Code of Conduct](CODE_OF_CONDUCT.md).
+Questions, bug reports, documentation improvements, and code contributions are
+welcome. Please follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
-A contribution can be one of the following cases:
+## Questions
 
-1. you have a question;
-2. you think you may have found a bug (including unexpected behavior);
-3. you want to make some kind of change to the code base (e.g. to fix a bug, to
-   add a new feature, to update documentation).
-4. you want to make a release
+Search the
+[existing issues](https://github.com/eWaterCycle/setup-apptainer/issues) before
+opening a new issue. Apply the "Question" label when appropriate.
 
-The sections below outline the steps in each case.
+## Reporting bugs
 
-## You have a question
+Check whether the problem has already been reported. If not, open an issue with:
 
-1. use the search functionality
-   [here](https://github.com/eWaterCycle/setup-apptainer/issues) to see if
-   someone already filed the same issue;
-2. if your issue search did not yield any relevant results, make a new issue;
-3. apply the \"Question\" label; apply other labels when relevant.
+- The action version or commit SHA.
+- The Apptainer version and runner operating system.
+- The relevant workflow and error logs.
+- Steps to reproduce the problem.
 
-## You think you may have found a bug
+Apply the relevant issue labels.
 
-1. use the search functionality
-   [here](https://github.com/eWaterCycle/setup-apptainer/issues) to see if
-   someone already filed the same issue;
-2. if your issue search did not yield any relevant results, make a new issue,
-   making sure to provide enough information to the rest of the community to
-   understand the cause and context of the problem. Depending on the issue, you
-   may want to include: - the
-   [SHA hashcode](https://help.github.com/articles/autolinked-references-and-urls/#commit-shas)
-   of the commit that is causing your problem; - some identifying information
-   (name and version number) for dependencies you\'re using; - information about
-   the operating system;
-3. apply relevant labels to the newly created issue.
+## Proposing changes
 
-## You want to make some kind of change to the code base
+1. Announce your proposed change in an issue before starting work.
+2. Wait for agreement on the approach.
+3. Fork the repository if needed and create a feature branch from the latest
+   main commit. Keep your branch up to date with the upstream repository.
+4. Follow the development instructions below and add tests when needed.
+5. Update the documentation. Keep the inputs and outputs in
+   [action.yml](action.yml) consistent with [README.md](README.md).
+6. Push your branch and open a pull request.
 
-1. (**important**) announce your plan to the rest of the community _before you
-   start working_. This announcement should be in the form of a (new) issue;
-2. (**important**) wait until some kind of consensus is reached about your idea
-   being a good idea;
-3. if needed, fork the repository to your own Github profile and create your own
-   feature branch off of the latest main commit. While working on your feature
-   branch, make sure to stay up to date with the main branch by pulling in
-   changes, possibly from the \'upstream\' repository (follow the instructions
-   [here](https://help.github.com/articles/configuring-a-remote-for-a-fork/) and
-   [here](https://help.github.com/articles/syncing-a-fork/));
-4. install the package dependencies with `npm ci`;
-5. make sure the existing tests still work by running `npm test`;
-6. add your own tests (if necessary);
-7. update or expand the documentation; Make sure the `inputs` in
-   [action.yml](action.yml) file are in-sync with their descriptions in
-   [README.md#inputs](README.md#inputs);
-8. [push](http://rogerdudler.github.io/git-guide/) your feature branch to (your
-   fork of) the ewatercycle repository on GitHub;
-9. create the pull request, e.g. following the instructions
-   [here](https://help.github.com/articles/creating-a-pull-request/).
+If you need help with tests or documentation, open the pull request and explain
+what remains to be done.
 
-In case you feel like you\'ve made a valuable contribution, but you don\'t know
-how to write or run tests for it, or how to generate the documentation: don\'t
-let this discourage you from making the pull request; we can help you! Just go
-ahead and submit the pull request, but keep in mind that you might be asked to
-append additional commits to your pull request.
+## Development
 
-## You want to make a release
+### Setup
 
-This section is for maintainers of the setup-apptainer action.
+Use Node.js 24, as specified in `.node-version`. Install dependencies:
 
-### Development and build
+```bash
+npm ci
+```
 
-Use Node.js 24 (the version in `.node-version`) and install dependencies with
-`npm ci`.
+### Project structure
 
 The development setup is based on
 [actions/typescript-action](https://github.com/actions/typescript-action/tree/57b9acc0d972b482f0db345fa09703f3612fda95)
 at commit `57b9acc0d972b482f0db345fa09703f3612fda95`.
-
-The action uses the tooling from that template:
 
 - `src/index.ts` runs the installation logic exported from `src/main.ts`.
 - TypeScript uses ESM and `.js` extensions for local imports.
 - Rollup bundles the action and its dependencies into `dist/index.js`.
 - Jest uses ESM mock fixtures in `__fixtures__` and collects coverage.
 
-Run all checks and rebuild the distributable with:
+### All checks
+
+Run all checks and rebuild the distributable:
 
 ```bash
 npm run all
 ```
 
-Individual commands are also available:
+CI checks formatting, types, linting, and unit tests. Integration tests run on
+Ubuntu 22.04, 24.04, and 26.04. A separate workflow verifies that the committed
+bundle matches the source.
+
+### Type checking, formatting, and linting
 
 ```bash
-npm run build         # Type-check without emitting files
-npm run format:check  # Check repository formatting
+npm run build
+npm run format:check
 npm run lint
+```
+
+### Unit tests and coverage
+
+Run the tests, then update the coverage badge:
+
+```bash
 npm test
-npm run coverage     # Update badges/coverage.svg after running tests
-npm run bundle       # Format and rebuild dist/
+npm run coverage
+```
+
+### Bundling
+
+Format the source and rebuild the distributable:
+
+```bash
+npm run bundle
 ```
 
 Commit the generated `dist/` files and updated coverage badge with source
-changes. CI runs formatting, linting, unit tests, and integration tests on
-Ubuntu 22.04, 24.04, and 26.04. A separate workflow rebuilds `dist/` and checks
-that it matches what is committed.
-
-To debug locally on Ubuntu, copy `.env.example` to `.env` and run
-`npm run local-action`. This runs the real installer and uses `sudo` to add the
-Apptainer PPA and install packages on your machine. Unit tests mock those
-commands.
-
-### Publish
-
-After committing and pushing the checked and bundled action, run
-`script/release` to create a version tag, update the major version tag, and push
-the release tags. The script prompts for the release version before making
 changes.
 
-Create the corresponding GitHub release at
-<https://github.com/eWaterCycle/setup-apptainer/releases/new>.
+### Local debugging
+
+Create a local environment file and run the action:
+
+```bash
+cp .env.example .env
+npm run local-action
+```
+
+This runs the real installer. It uses sudo to install missing prerequisites and
+load the installation's AppArmor profile when required. Unit tests mock those
+commands.
+
+### Docker checks
+
+The Docker helper accepts an Apptainer version and an Ubuntu version. It tests
+x64 using a disposable privileged container, which permits nested Apptainer
+mounts. Docker and access to its daemon are required.
+
+Test the latest Apptainer release on Ubuntu 26.04:
+
+```bash
+script/test-docker
+```
+
+Test a pinned Apptainer version on Ubuntu 26.04:
+
+```bash
+script/test-docker 1.5.4
+```
+
+Test a pinned version on another supported Ubuntu release:
+
+```bash
+script/test-docker 1.4.4 24.04
+```
+
+The helper downloads Node.js for the container, installs Apptainer as a non-root
+user, checks the version, runs Alpine, and verifies local installation reuse.
+Docker shares the host kernel, so AppArmor enforcement on GitHub runners still
+needs validation in CI.
+
+### Updating the installer
+
+The installer is pinned to an upstream commit and verified against its SHA-256
+in `src/installer.ts`. The unmodified script is also stored as a test fixture
+with its original license header.
+
+When updating the installer, update its commit, checksum, test fixture, and
+cache recipe version. Runtime AppArmor profiles are loaded separately from the
+cached directory.
+
+## Releasing
+
+Run the checks, rebuild the action, and commit and push the generated files
+before creating a release.
+
+### Release tags
+
+Run the release helper:
+
+```bash
+script/release
+```
+
+It prompts for the release version, creates the version tag, updates the major
+version tag, and pushes the release tags.
+
+### GitHub release
+
+Create the corresponding release on the
+[GitHub releases page](https://github.com/eWaterCycle/setup-apptainer/releases/new).
