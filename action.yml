@@ -3,11 +3,24 @@ description: 'Setup apptainer an open source container platform'
 author: Stefan Verhoeven
 inputs:
   apptainer-version:
-    description: Version of apptainer to setup
+    description: Apptainer GitHub release version to install, or latest
     required: false
-    default: 1.3.6
+    default: latest
+  cache:
+    description: Cache the complete installation across workflow runs
+    required: false
+    default: 'true'
+  github-token:
+    description: GitHub token used to resolve release metadata
+    required: false
+    default: ${{ github.token }}
+outputs:
+  apptainer-version:
+    description: Installed version of apptainer
+  cache-hit:
+    description: Whether a complete installation was reused
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
 branding:
   icon: box

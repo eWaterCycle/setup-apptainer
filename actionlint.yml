@@ -1,0 +1,6 @@
+# See: https://github.com/rhysd/actionlint/blob/v1.7.7/docs/config.md
+
+# Super-linter's actionlint version does not yet recognize this hosted runner.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04

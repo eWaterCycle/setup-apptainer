@@ -1,0 +1,27 @@
+# See: https://github.com/licensee/licensed/blob/main/docs/configuration.md
+
+sources:
+  npm: true
+
+allowed:
+  - 0bsd
+  - apache-2.0
+  - bsd-2-clause
+  - bsd-3-clause
+  - blueoak-1.0.0
+  - isc
+  - mit
+  - cc0-1.0
+  - other
+
+ignored:
+  npm:
+    # Used by Rollup.js when building in GitHub Actions
+    - '@rollup/rollup-linux-x64-gnu'
+
+# debug optionally loads these development dependencies into the Rollup bundle.
+additional_terms:
+  npm:
+    debug:
+      - .licenses/amendments/npm/debug/supports-color.txt
+      - .licenses/amendments/npm/debug/has-flag.txt
