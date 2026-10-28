@@ -53,6 +53,7 @@ at commit `57b9acc0d972b482f0db345fa09703f3612fda95`.
 - `src/index.ts` runs the installation logic exported from `src/main.ts`.
 - TypeScript uses ESM and `.js` extensions for local imports.
 - Rollup bundles the action and its dependencies into `dist/index.js`.
+- Packaging generates third-party notices in `dist/licenses.txt`.
 - Jest uses ESM mock fixtures in `__fixtures__` and collects coverage.
 
 ### All checks
@@ -133,7 +134,8 @@ script/test-docker 1.4.4 24.04
 ```
 
 The helper downloads Node.js for the container, installs Apptainer as a non-root
-user, checks the version, runs Alpine, and verifies local installation reuse.
+user, checks the version, runs Alpine, and verifies local installation reuse. It
+installs AppArmor tools and mounts securityfs when the host requires profiles.
 Docker shares the host kernel, so AppArmor enforcement on GitHub runners still
 needs validation in CI.
 

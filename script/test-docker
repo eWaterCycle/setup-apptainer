@@ -16,10 +16,16 @@ docker run --rm -i --privileged --platform linux/amd64 \
   "ubuntu:${2:-26.04}" bash -se <<'CONTAINER'
 apt-get update >/tmp/bootstrap.log 2>&1
 apt-get install -y --no-install-recommends \
-  ca-certificates curl sudo tzdata libstdc++6 xz-utils >>/tmp/bootstrap.log 2>&1 || {
+  apparmor ca-certificates curl sudo tzdata libstdc++6 xz-utils >>/tmp/bootstrap.log 2>&1 || {
   cat /tmp/bootstrap.log
   exit 1
 }
+
+# Privileged containers need securityfs mounted to load AppArmor profiles.
+if [ "$(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns 2>/dev/null || true)" = 1 ] &&
+  [ ! -e /sys/kernel/security/apparmor/.load ]; then
+  mount -t securityfs securityfs /sys/kernel/security
+fi
 
 # The action supports x64 runners only.
 node_dist="node-v${NODE_VERSION}-linux-x64"
