@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Keep generated files and the checksum-verified upstream fixture intact.
+lint_exclude='(^|/)(dist|node_modules|coverage|lib|\.agents|\.licenses)/'
+lint_exclude+='|(^|/)__fixtures__/install-unprivileged\.sh$'
+exec docker run --rm \
+	--env RUN_LOCAL=true \
+	--env DEFAULT_BRANCH=main \
+	--env LINTER_RULES_PATH=. \
+	--env CHECKOV_FILE_NAME=.checkov.yml \
+	--env "FILTER_REGEX_EXCLUDE=$lint_exclude" \
+	--env VALIDATE_ALL_CODEBASE=true \
+	--env VALIDATE_BIOME_FORMAT=false \
+	--env VALIDATE_BIOME_LINT=false \
+	--env VALIDATE_GITHUB_ACTIONS_ZIZMOR=false \
+	--env VALIDATE_JAVASCRIPT_ES=false \
+	--env VALIDATE_JSCPD=false \
+	--env VALIDATE_TYPESCRIPT_ES=false \
+	--env VALIDATE_JSON=false \
+	--mount "type=bind,source=$repo_dir,target=/tmp/lint" \
+	ghcr.io/super-linter/super-linter:slim-v8.7.0

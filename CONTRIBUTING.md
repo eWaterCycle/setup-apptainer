@@ -86,36 +86,18 @@ scripts, workflows, Markdown, YAML, spelling, and security. `npm run all` does
 not run Super-linter.
 
 To run Super-linter locally, install dependencies with `npm ci` and ensure
-Docker is running. Run the following Bash commands from the repository root. The
-settings match [the CI workflow](.github/workflows/linter.yml); no GitHub token
-is needed in local mode.
+Docker is running. From the repository root, run:
 
 ```bash
-lint_exclude='(^|/)(dist|node_modules|coverage|lib|\.agents|\.licenses)/'
-lint_exclude+='|(^|/)__fixtures__/install-unprivileged\.sh$'
-docker run --rm \
-  --env RUN_LOCAL=true \
-  --env DEFAULT_BRANCH=main \
-  --env LINTER_RULES_PATH=. \
-  --env CHECKOV_FILE_NAME=.checkov.yml \
-  --env "FILTER_REGEX_EXCLUDE=$lint_exclude" \
-  --env VALIDATE_ALL_CODEBASE=true \
-  --env VALIDATE_BIOME_FORMAT=false \
-  --env VALIDATE_BIOME_LINT=false \
-  --env VALIDATE_GITHUB_ACTIONS_ZIZMOR=false \
-  --env VALIDATE_JAVASCRIPT_ES=false \
-  --env VALIDATE_JSCPD=false \
-  --env VALIDATE_TYPESCRIPT_ES=false \
-  --env VALIDATE_JSON=false \
-  --mount "type=bind,source=$PWD,target=/tmp/lint" \
-  ghcr.io/super-linter/super-linter:slim-v8.7.0
+scripts/superlint
 ```
 
+CI runs the same script, so the image version and settings are maintained in one
+place. No GitHub token is needed.
+
 Super-linter checks Git-tracked files, including local edits. Stage new files
-with `git add <path>` before running it. Keep the image version and settings
-above aligned with the Super-linter action used by CI when updating it.
-Generated files, cached license records, and the unmodified upstream installer
-fixture are excluded.
+with `git add <path>` before running it. Generated files, cached license
+records, and the unmodified upstream installer fixture are excluded.
 
 ### Unit tests and coverage
 

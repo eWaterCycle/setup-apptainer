@@ -1,5 +1,4 @@
-# This workflow will lint the entire codebase using the
-# `super-linter/super-linter` action.
+# This workflow lints the codebase with the same Super-linter script used locally.
 #
 # For more information, see the super-linter repository:
 #     https://github.com/super-linter/super-linter
@@ -15,8 +14,6 @@ on:
 
 permissions:
   contents: read
-  packages: read
-  statuses: write
 
 jobs:
   lint:
@@ -43,19 +40,4 @@ jobs:
 
       - name: Lint Codebase
         id: super-linter
-        uses: super-linter/super-linter/slim@v8
-        env:
-          CHECKOV_FILE_NAME: .checkov.yml
-          DEFAULT_BRANCH: main
-          # Keep generated files and the checksum-verified upstream fixture intact.
-          FILTER_REGEX_EXCLUDE: '(^|/)(dist|node_modules|coverage|lib|\.agents|\.licenses)/|(^|/)__fixtures__/install-unprivileged\.sh$'
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          LINTER_RULES_PATH: .
-          VALIDATE_ALL_CODEBASE: true
-          VALIDATE_BIOME_FORMAT: false
-          VALIDATE_BIOME_LINT: false
-          VALIDATE_GITHUB_ACTIONS_ZIZMOR: false
-          VALIDATE_JAVASCRIPT_ES: false
-          VALIDATE_JSCPD: false
-          VALIDATE_TYPESCRIPT_ES: false
-          VALIDATE_JSON: false
+        run: scripts/superlint
