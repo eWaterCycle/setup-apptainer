@@ -1,8 +1,8 @@
+# GitHub Action to setup apptainer
+
 [![Continuous Integration](https://github.com/eWaterCycle/setup-apptainer/actions/workflows/ci.yml/badge.svg)](https://github.com/eWaterCycle/setup-apptainer/actions/workflows/ci.yml)
 ![Coverage](badges/coverage.svg)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7097122.svg)](https://doi.org/10.5281/zenodo.7097122)
-
-# GitHub Action to setup apptainer
 
 Install [Apptainer](https://apptainer.org/) in your GitHub Actions workflows on
 Ubuntu 22.04, 24.04, or 26.04 (x64) using

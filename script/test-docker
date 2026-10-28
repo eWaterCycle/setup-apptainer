@@ -3,17 +3,17 @@ set -euo pipefail
 
 # Docker privileged mode permits nested Apptainer mounts.
 if [ "$#" -gt 2 ]; then
-  echo "Usage: $0 [apptainer-version] [ubuntu-version]" >&2
-  exit 2
+	echo "Usage: $0 [apptainer-version] [ubuntu-version]" >&2
+	exit 2
 fi
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-node_version="$(tr -d '\r\n' < "$repo_dir/.node-version")"
+node_version="$(tr -d '\r\n' <"$repo_dir/.node-version")"
 docker run --rm -i --privileged --platform linux/amd64 \
-  --mount "type=bind,source=$repo_dir,target=/workspace,readonly" \
-  --env DEBIAN_FRONTEND=noninteractive \
-  --env "NODE_VERSION=$node_version" \
-  --env "INPUT_APPTAINER-VERSION=${1:-latest}" \
-  "ubuntu:${2:-26.04}" bash -se <<'CONTAINER'
+	--mount "type=bind,source=$repo_dir,target=/workspace,readonly" \
+	--env DEBIAN_FRONTEND=noninteractive \
+	--env "NODE_VERSION=$node_version" \
+	--env "INPUT_APPTAINER-VERSION=${1:-latest}" \
+	"ubuntu:${2:-26.04}" bash -se <<'CONTAINER'
 apt-get update >/tmp/bootstrap.log 2>&1
 apt-get install -y --no-install-recommends \
   apparmor ca-certificates curl sudo tzdata libstdc++6 xz-utils >>/tmp/bootstrap.log 2>&1 || {

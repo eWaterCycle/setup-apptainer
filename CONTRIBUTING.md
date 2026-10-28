@@ -23,13 +23,13 @@ Apply the relevant issue labels.
 ## Proposing changes
 
 1. Announce your proposed change in an issue before starting work.
-2. Wait for agreement on the approach.
-3. Fork the repository if needed and create a feature branch from the latest
+1. Wait for agreement on the approach.
+1. Fork the repository if needed and create a feature branch from the latest
    main commit. Keep your branch up to date with the upstream repository.
-4. Follow the development instructions below and add tests when needed.
-5. Update the documentation. Keep the inputs and outputs in
+1. Follow the development instructions below and add tests when needed.
+1. Update the documentation. Keep the inputs and outputs in
    [action.yml](action.yml) consistent with [README.md](README.md).
-6. Push your branch and open a pull request.
+1. Push your branch and open a pull request.
 
 If you need help with tests or documentation, open the pull request and explain
 what remains to be done.
@@ -67,7 +67,9 @@ npm run all
 
 CI checks formatting, types, linting, and unit tests. Integration tests run on
 Ubuntu 22.04, 24.04, and 26.04. A separate workflow verifies that the committed
-bundle matches the source.
+bundle matches the source. The Super-linter workflow also checks shell scripts,
+GitHub Actions workflows, YAML, and Markdown using the template's linter
+configuration.
 
 ### Type checking, formatting, and linting
 

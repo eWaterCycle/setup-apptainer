@@ -1,0 +1,15 @@
+exit-code: 1
+exit-on-eol: 2
+scan:
+  disable-telemetry: true
+  scanners:
+    - vuln
+    - misconfig
+    - secret
+  skip-dirs:
+    - dist
+    - node_modules
+    - coverage
+    - lib
+    - .agents
+    - .licenses
