@@ -43,6 +43,13 @@ jobs:
         with:
           ruby-version: ruby
 
+      # rugged links OpenSSL statically and needs these transitive libraries.
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libjitterentropy3-dev libzstd-dev
+
       - uses: licensee/setup-licensed@v1.3.2
         with:
           version: 4.x
