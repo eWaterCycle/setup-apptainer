@@ -1,6 +1,6 @@
 {
   "name": "setup-apptainer",
-  "version": "0.0.0",
+  "version": "v3.0.0",
   "private": true,
   "description": "Apptainer setup action",
   "scripts": {
