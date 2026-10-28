@@ -1,0 +1,75 @@
+name: Continuous Integration
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+
+permissions:
+  contents: read
+
+jobs:
+  test-typescript:
+    name: TypeScript Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Check Format
+        id: npm-format-check
+        run: npm run format:check
+
+      - name: Type-check
+        run: npm run build
+
+      - name: Lint
+        id: npm-lint
+        run: npm run lint
+
+      - name: Test
+        id: npm-ci-test
+        run: npm run ci-test
+
+  test-action: # Test the checked-in bundle on clean runners
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - ubuntu-26.04
+        version:
+          - 'latest'
+          - '1.5.5'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup apptainer
+        id: setup
+        with:
+          apptainer-version: ${{ matrix.version }}
+        uses: ./
+      - name: Verify apptainer
+        run:
+          __tests__/verify-apptainer-version.sh '${{
+          steps.setup.outputs.apptainer-version }}'
+        shell: bash
+      - name: Verify requested version
+        if: matrix.version != 'latest'
+        run: __tests__/verify-apptainer-version.sh '${{ matrix.version }}'
+      - name: Run an apptainer container
+        run: apptainer -v run docker://alpine cat /etc/os-release
