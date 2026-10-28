@@ -1,8 +1,7 @@
 import {getInput, setOutput, setFailed, info} from '@actions/core'
-import {downloadTool, cacheFile, find} from '@actions/tool-cache'
-import {exec} from '@actions/exec'
+import {exec, getExecOutput} from '@actions/exec'
 
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
     if (process.platform === 'win32') {
       throw new Error('Apptainer is not supported on Windows')
@@ -10,29 +9,28 @@ async function run(): Promise<void> {
       throw new Error('Apptainer is not supported on MacOS')
     }
 
-    const versionSpec: string = getInput('apptainer-version')
-    const url = `https://github.com/apptainer/apptainer/releases/download/v${versionSpec}/apptainer_${versionSpec}_amd64.deb`
-
-    const toolName = 'apptainer'
-    const fname = 'apptainer.deb'
-    let cacheDir = find(toolName, versionSpec)
-
-    if (cacheDir !== '') {
-      info(`Found cache: ${cacheDir}/`)
-    } else {
-      info(`Dowloading ${url}`)
-      const pathToDeb = await downloadTool(url)
-      info('Adding deb to cache')
-      cacheDir = await cacheFile(pathToDeb, fname, toolName, versionSpec)
-      info(`... ${cacheDir}`)
+    const versionSpec = getInput('apptainer-version') || 'latest'
+    if (versionSpec !== 'latest' && !/^\d+\.\d+\.\d+$/.test(versionSpec)) {
+      throw new Error(
+        'apptainer-version must be "latest" or a version like 1.5.5'
+      )
     }
 
-    const pathToCachedDeb = `${cacheDir}/${fname}`
-    await exec('sudo', ['apt-get', 'install', '-y', pathToCachedDeb])
-    setOutput('apptainer-version', versionSpec)
+    info('Installing Apptainer from ppa:apptainer/ppa')
+    await exec('sudo', ['add-apt-repository', '-y', 'ppa:apptainer/ppa'])
+    await exec('sudo', ['apt-get', 'update'])
+    // PPA versions include a packaging revision and Ubuntu codename.
+    const pkg =
+      versionSpec === 'latest' ? 'apptainer' : `apptainer=${versionSpec}-*`
+    await exec('sudo', ['apt-get', 'install', '-y', pkg])
+    const {stdout} = await getExecOutput('apptainer', ['--version'])
+    const installedVersion = stdout.trim().replace(/^apptainer version /, '')
+    setOutput('apptainer-version', installedVersion)
   } catch (error) {
     if (error instanceof Error) setFailed(error.message)
   }
 }
 
-run()
+if (require.main === module) {
+  run()
+}

@@ -3,11 +3,14 @@ description: 'Setup apptainer an open source container platform'
 author: Stefan Verhoeven
 inputs:
   apptainer-version:
-    description: Version of apptainer to setup
+    description: Version of apptainer available in the PPA, or latest
     required: false
-    default: 1.3.6
+    default: latest
+outputs:
+  apptainer-version:
+    description: Installed version of apptainer
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
 branding:
   icon: box

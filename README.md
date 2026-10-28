@@ -5,7 +5,7 @@ This action enables you to easily use apptainer images in your GitHub action wor
 
 # GitHub Action to setup apptainer
 
-To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action downloads and installs it for you.
+To use [apptainer](https://apptainer.org/) containers in a workflow you need to install it first. This GitHub Action installs it from the official [Apptainer Ubuntu PPA](https://apptainer.org/docs/admin/latest/installation.html#install-ubuntu-packages), using packages built for the runner's Ubuntu release. Ubuntu runners must have `sudo` and `add-apt-repository` available, as GitHub-hosted Ubuntu runners do.
 
 The setup will add the apptainer executable to the PATH env var so it can be called in later steps.
 
@@ -13,17 +13,22 @@ The setup will add the apptainer executable to the PATH env var so it can be cal
 
 ### `apptainer-version`
 
-Version of apptainer. See [releases page](https://github.com/apptainer/apptainer/releases) for available versions.
-Version string should start with major version, not with `v` character.
+Version of apptainer, defaulting to `latest`. An explicit version such as `1.5.5` must be available in the PPA for the runner's Ubuntu release. The PPA generally only retains the latest version, so older versions previously installed from GitHub releases may no longer be available. Version strings must not start with `v`.
+
+## Outputs
+
+### `apptainer-version`
+
+The installed Apptainer version.
 
 ## Example usage
 
 ```yaml
 steps:
-- uses: actions/checkout@v2
-- uses: eWaterCycle/setup-apptainer@v2
+- uses: actions/checkout@v7
+- uses: eWaterCycle/setup-apptainer@v3
   with:
-    apptainer-version: 1.3.6
+    apptainer-version: latest
 - name: Run an apptainer container
   run: apptainer run docker://alpine cat /etc/os-release
 ```
