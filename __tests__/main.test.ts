@@ -1,14 +1,15 @@
-import {beforeEach, expect, jest, test} from '@jest/globals'
-import {getInput, setOutput, setFailed} from '@actions/core'
-import {exec, getExecOutput} from '@actions/exec'
-import {run} from '../src/main'
+import { beforeEach, expect, jest, test } from '@jest/globals'
+import * as core from '../__fixtures__/core.js'
+import * as exec from '../__fixtures__/exec.js'
 
-jest.mock('@actions/core')
-jest.mock('@actions/exec')
+jest.unstable_mockModule('@actions/core', () => core)
+jest.unstable_mockModule('@actions/exec', () => exec)
 
-const mockInput = jest.mocked(getInput)
-const mockExec = jest.mocked(exec)
-const mockExecOutput = jest.mocked(getExecOutput)
+const { run } = await import('../src/main.js')
+const { setOutput, setFailed } = core
+const mockInput = core.getInput
+const mockExec = exec.exec
+const mockExecOutput = exec.getExecOutput
 
 beforeEach(() => {
   jest.resetAllMocks()
@@ -22,7 +23,7 @@ beforeEach(() => {
 
 test.each(['latest', ''])(
   'installs the latest PPA package for %p',
-  async input => {
+  async (input) => {
     mockInput.mockReturnValue(input)
 
     await run()
@@ -66,7 +67,7 @@ test('reports an unavailable version without claiming a successful install', asy
 
 test.each(['v1.5.5', '1.5', '1.5.*', '--allow-unauthenticated'])(
   'rejects invalid version %p before changing repositories',
-  async input => {
+  async (input) => {
     mockInput.mockReturnValue(input)
 
     await run()
@@ -83,7 +84,7 @@ test.each([
   ['darwin', 'MacOS']
 ])('rejects unsupported platform %s', async (platform, name) => {
   const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform')!
-  Object.defineProperty(process, 'platform', {value: platform})
+  Object.defineProperty(process, 'platform', { value: platform })
   try {
     await run()
     expect(setFailed).toHaveBeenCalledWith(

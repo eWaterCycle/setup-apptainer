@@ -1,5 +1,5 @@
-import {getInput, setOutput, setFailed, info} from '@actions/core'
-import {exec, getExecOutput} from '@actions/exec'
+import { getInput, setOutput, setFailed, info } from '@actions/core'
+import { exec, getExecOutput } from '@actions/exec'
 
 export async function run(): Promise<void> {
   try {
@@ -23,14 +23,10 @@ export async function run(): Promise<void> {
     const pkg =
       versionSpec === 'latest' ? 'apptainer' : `apptainer=${versionSpec}-*`
     await exec('sudo', ['apt-get', 'install', '-y', pkg])
-    const {stdout} = await getExecOutput('apptainer', ['--version'])
+    const { stdout } = await getExecOutput('apptainer', ['--version'])
     const installedVersion = stdout.trim().replace(/^apptainer version /, '')
     setOutput('apptainer-version', installedVersion)
   } catch (error) {
     if (error instanceof Error) setFailed(error.message)
   }
-}
-
-if (require.main === module) {
-  run()
 }
