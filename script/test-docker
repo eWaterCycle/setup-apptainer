@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Docker privileged mode permits nested Apptainer mounts.
+if [ "$#" -gt 2 ]; then
+  echo "Usage: $0 [apptainer-version] [ubuntu-version]" >&2
+  exit 2
+fi
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+node_version="$(tr -d '\r\n' < "$repo_dir/.node-version")"
+docker run --rm -i --privileged --platform linux/amd64 \
+  --mount "type=bind,source=$repo_dir,target=/workspace,readonly" \
+  --env DEBIAN_FRONTEND=noninteractive \
+  --env "NODE_VERSION=$node_version" \
+  --env "INPUT_APPTAINER-VERSION=${1:-latest}" \
+  "ubuntu:${2:-26.04}" bash -se <<'CONTAINER'
+apt-get update >/tmp/bootstrap.log 2>&1
+apt-get install -y --no-install-recommends \
+  ca-certificates curl sudo tzdata libstdc++6 xz-utils >>/tmp/bootstrap.log 2>&1 || {
+  cat /tmp/bootstrap.log
+  exit 1
+}
+
+# The action supports x64 runners only.
+node_dist="node-v${NODE_VERSION}-linux-x64"
+curl -fLsS --retry 2 "https://nodejs.org/dist/v${NODE_VERSION}/${node_dist}.tar.xz" -o /tmp/node.tar.xz
+tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 "${node_dist}/bin/node"
+node -p '`Node ${process.version}, architecture ${process.arch}`'
+
+# Match GitHub's x64 Ubuntu 26.04 VMs. The installer does not use the PPA.
+. /etc/os-release
+if [ "$VERSION_ID" = 26.04 ] && [ "$(dpkg --print-architecture)" = amd64 ]; then
+  echo 'APT::Architecture-Variants "amd64v3";' >/etc/apt/apt.conf.d/99-test-variant
+fi
+useradd -m -s /bin/bash runner
+echo 'runner ALL=(ALL) NOPASSWD:ALL' >/etc/sudoers.d/runner
+chmod 440 /etc/sudoers.d/runner
+install -o runner -g runner -m 600 /dev/null /tmp/apptainer-output
+install -o runner -g runner -m 600 /dev/null /tmp/apptainer-path
+export GITHUB_OUTPUT=/tmp/apptainer-output GITHUB_PATH=/tmp/apptainer-path
+export RUNNER_TOOL_CACHE=/home/runner/toolcache
+runuser -u runner -- node /workspace/dist/index.js
+grep -q '^false$' "$GITHUB_OUTPUT"
+bin_dir="$(head -n 1 "$GITHUB_PATH")"
+runuser -u runner -- "$bin_dir/apptainer" --version
+runuser -u runner -- "$bin_dir/apptainer" exec docker://alpine:3.22.2 cat /etc/alpine-release
+
+# Re-running the action should only reuse the validated installation directory.
+runuser -u runner -- truncate -s 0 "$GITHUB_OUTPUT"
+runuser -u runner -- node /workspace/dist/index.js
+grep -q '^true$' "$GITHUB_OUTPUT"
+echo 'Installation, Alpine execution, and local cache reuse passed'
+CONTAINER
