@@ -18,6 +18,7 @@ repository-code: "https://github.com/eWaterCycle/setup-apptainer"
 url: https://github.com/marketplace/actions/setup-apptainer
 title: setup-apptainer
 abstract: GitHub Action workflow to setup apptainer.
+doi: 10.5281/zenodo.7097122
 identifiers:
   - type: doi
     value: 10.5281/zenodo.7097122
