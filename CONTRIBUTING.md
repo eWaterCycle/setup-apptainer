@@ -53,7 +53,8 @@ at commit `57b9acc0d972b482f0db345fa09703f3612fda95`.
 - `src/index.ts` runs the installation logic exported from `src/main.ts`.
 - TypeScript uses ESM and `.js` extensions for local imports.
 - Rollup bundles the action and its dependencies into `dist/index.js`.
-- Packaging generates third-party notices in `dist/licenses.txt`.
+- Licensed caches dependency license texts in `.licenses/` and checks them in
+  CI.
 - Jest uses ESM mock fixtures in `__fixtures__` and collects coverage.
 
 ### All checks
@@ -95,6 +96,23 @@ npm run bundle
 
 Commit the generated `dist/` files and updated coverage badge with source
 changes.
+
+### Dependency licenses
+
+The [Licensed workflow](.github/workflows/licensed.yml) follows
+[actions/typescript-action](https://github.com/actions/typescript-action#dependency-license-management).
+It checks dependency licenses on pull requests and pushes to `main`. License
+texts are committed in `.licenses/` alongside the action.
+
+After updating dependencies, run `licensed cache` and `licensed status` with
+[Licensed 4.x](https://github.com/licensee/licensed) installed, then commit the
+updated `.licenses/` files. You can also run the Licensed workflow manually on
+your branch to update and commit the records.
+
+The `debug` record includes notices from `.licenses/amendments/npm/debug/` for
+its optional `supports-color` and `has-flag` modules bundled by Rollup. Update
+those notices from the installed packages' `license` files when their versions
+change.
 
 ### Local debugging
 
